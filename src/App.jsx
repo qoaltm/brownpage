@@ -8,6 +8,7 @@ import ToolsPage from "./pages/ToolsPage";
 import AboutPage from "./pages/AboutPage";
 import SyaratKetentuanPage from "./pages/SyaratKetentuanPage";
 import KebijakanPrivasiPage from "./pages/KebijakanPrivasiPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -27,6 +28,7 @@ function AnimatedRoutes() {
           <Route path="/tentang" element={<AboutPage />} />
           <Route path="/syarat-dan-ketentuan" element={<SyaratKetentuanPage />} />
           <Route path="/kebijakan-privasi" element={<KebijakanPrivasiPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </motion.div>
     </AnimatePresence>

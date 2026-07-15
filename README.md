@@ -1,6 +1,6 @@
-# Kopitaim
+# Brownpage
 
-Dashboard edukasi & kalkulator seduh manual untuk barista. Dibangun dengan React + Vite + Tailwind CSS v4 + React Router.
+Dashboard edukasi & kalkulator seduh manual untuk barista. Dibangun dengan React + Vite + Tailwind CSS v4 + React Router + Framer Motion.
 
 ## Menjalankan secara lokal
 
@@ -23,58 +23,59 @@ biasanya otomatis terdeteksi untuk SPA; kalau tidak, tambahkan rewrite rule `/* 
 
 ## Halaman
 
-- **`/` — Dashboard**: pengantar ilmu kopi — roda rasa interaktif, jenis biji (Arabika/Robusta/Liberika/
-  Excelsa), proses pasca panen (washed/natural/honey/giling basah/anaerobic), tingkat sangrai, dan
-  panduan ukuran gilingan.
+- **`/` — Dashboard**: pengantar ilmu kopi, roda rasa interaktif 3 tingkat, jenis biji (Arabika/
+  Robusta/Liberika/Excelsa), proses pasca panen, tingkat sangrai, panduan ukuran gilingan, origin
+  (asal kopi dunia dan Indonesia), dan varietas/kultivar kopi. Ada jump-link nav supaya gampang
+  lompat antar section.
 - **`/teknik` — Teknik**: kalkulator rasio seduh. Pilih teknik lewat dropdown, atur parameter, jadwal
-  tuang & timer otomatis mengikuti teknik yang dipilih.
-- **`/tentang` — Tentang Kami**: profil singkat Kopitaim.
+  tuang & timer otomatis mengikuti teknik yang dipilih, termasuk versi Japanese iced.
+- **`/tools` — Tools**: etalase alat seduh dengan tautan afiliasi, bisa difilter per kategori alat.
+- **`/tentang` — Tentang Kami**: profil singkat Brownpage.
+- **`/syarat-dan-ketentuan`**, **`/kebijakan-privasi`**: halaman legal, ditautkan dari footer.
+- **`*` (404)**: halaman not-found untuk URL yang salah/tidak ada.
 
 ## Struktur project
 
 ```
 src/
-  assets/kopitaim-logo.png
+  assets/brownpage-logo.png
   data/
-    recipes.js              preset teknik seduh + semua logika kalkulasi (pure functions)
-    coffeeKnowledge.js       konten edukasi untuk halaman Dashboard
-  hooks/useBrewCalculator.js state kalkulator + nilai turunan (schedule, strength)
+    recipes.js                 preset teknik seduh + semua logika kalkulasi (pure functions)
+    coffeeKnowledge.js          konten edukasi Dashboard (flavor wheel, biji, proses, sangrai,
+                                 gilingan, origin, varietas)
+    tools.js                    data etalase alat seduh + kategori
+  hooks/useBrewCalculator.js    state kalkulator + nilai turunan (schedule, strength, iced)
   components/
-    NavBar.jsx               logo + menu Dashboard/Teknik/Tentang Kami
-    PageHeader.jsx           header halaman yang ringkas (bukan hero besar)
-    FlavorWheel.jsx          roda rasa SVG interaktif
-    RecipeDropdown.jsx       dropdown pilihan teknik seduh
-    Slider.jsx / Segmented.jsx  komponen kontrol yang dipakai ulang
-    Controls.jsx             semua slider parameter + kontrol khusus Kasuya
-    SpecCard.jsx             kartu ringkasan resep (termasuk estimasi kekuatan)
-    ScheduleTimer.jsx        jadwal tuang + timer berjalan, ikut teknik aktif
-    Footer.jsx
+    NavBar.jsx                 logo + menu utama
+    Footer.jsx                 footer 4 kolom (fitur, info, sosial, kontak) + link legal
+    DashboardHero.jsx          hero besar khusus halaman Dashboard
+    DashboardSectionNav.jsx    jump-link nav antar section Dashboard
+    PageHeader.jsx             header ringkas untuk halaman selain Dashboard
+    FlavorWheel.jsx            roda rasa SVG interaktif (sunburst 3 ring + hover highlight)
+    RecipeDropdown.jsx         dropdown pilihan teknik seduh
+    Slider.jsx / Segmented.jsx komponen kontrol yang dipakai ulang
+    Controls.jsx                semua slider parameter + kontrol khusus Kasuya
+    SpecCard.jsx                kartu ringkasan resep (termasuk versi iced)
+    ScheduleTimer.jsx           jadwal tuang + timer berjalan, ikut teknik aktif
   pages/
-    DashboardPage.jsx
-    TeknikPage.jsx
-    AboutPage.jsx
-  App.jsx                    routing + layout global
-  index.css                  @theme Tailwind v4 (warna, font) + styling range input
+    DashboardPage.jsx, TeknikPage.jsx, ToolsPage.jsx, AboutPage.jsx,
+    SyaratKetentuanPage.jsx, KebijakanPrivasiPage.jsx, NotFoundPage.jsx
+  App.jsx                       routing, transisi antar halaman, layout global
+  index.css                     @theme Tailwind v4 (warna, font) + styling range input
 ```
 
-## Teknik seduh yang tersedia
+## Menambah resep baru
 
-Tetsu Kasuya (4:6 Method), James Hoffmann (Ultimate V60), Kalita Wave, Chemex, AeroPress standar,
-French Press, Moka Pot, Cold Brew, dan Custom (kontrol manual penuh). Rasio/suhu/waktu masing-masing
-diadaptasi dari panduan yang umum dipakai di komunitas kopi — dipakai sebagai titik awal, bukan aturan
-mati.
+Tambahkan entry baru di `recipes` object, `src/data/recipes.js`. Kalau butuh jadwal tuang khusus,
+tambahkan cabang baru di `buildSchedule()`. Muncul otomatis di dropdown Teknik.
 
-## Menambah teknik baru
+## Menambah tool/produk afiliasi baru
 
-1. Tambahkan entry baru di `recipes` object, `src/data/recipes.js`.
-2. Kalau butuh jadwal tuang khusus (bukan pola generik 2 tahap), tambahkan cabang baru di
-   `buildSchedule()` (lihat contoh `kasuyaSchedule`, `hoffmannSchedule`, `kalitaSchedule`, dst).
-3. Muncul otomatis di dropdown Teknik — tidak perlu ubah komponen UI.
+Tambahkan entry baru di `tools` array, `src/data/tools.js`, isi `affiliateUrl` dengan link asli.
 
 ## Catatan
 
 - Estimasi "kekuatan" di kartu resep adalah heuristik sederhana untuk intuisi rasa, bukan pengukuran
   TDS/EY yang presisi.
-- Konten Dashboard (roda rasa, jenis biji, dll) adalah panduan umum yang dipakai luas di dunia kopi,
-  bukan referensi ilmiah presisi laboratorium — cocok untuk pengantar, bukan pengganti sertifikasi
-  Q-Grader.
+- `public/og-image.png` masih placeholder sederhana (logo di atas background polos), ganti dengan
+  desain yang lebih matang kalau sempat.

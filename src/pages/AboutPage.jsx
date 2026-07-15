@@ -9,14 +9,14 @@ export default function AboutPage() {
         <div className="max-w-[70ch] space-y-4 text-sm leading-relaxed text-tintasoft">
           <p>
             <span className="text-tinta font-bold">Brownpage</span> adalah alat bantu gratis untuk
-            barista dan penikmat kopi rumahan yang ingin lebih paham cara kerja seduh manual — mulai
+            barista dan penikmat kopi rumahan yang ingin lebih paham cara kerja seduh manual, mulai
             dari kosakata dasar (roda rasa, jenis biji, proses, sangrai, gilingan) sampai kalkulator
             rasio dan jadwal tuang yang bisa langsung dipakai di dapur atau bar kopi.
           </p>
           <p>
             Tujuannya sederhana: jadi referensi cepat yang tidak perlu buka banyak tab atau menghafal
             angka. Semua resep di halaman Teknik diadaptasi dari metode yang sudah dipublikasikan
-            secara luas oleh komunitas kopi dunia — dipakai sebagai titik awal yang bisa disesuaikan
+            secara luas oleh komunitas kopi dunia, dipakai sebagai titik awal yang bisa disesuaikan
             lagi dengan biji, alat, dan selera masing-masing.
           </p>
           <p>

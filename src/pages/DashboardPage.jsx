@@ -1,6 +1,8 @@
+import { useState } from "react";
 import DashboardHero from "../components/DashboardHero";
+import DashboardSectionNav from "../components/DashboardSectionNav";
 import FlavorWheel from "../components/FlavorWheel";
-import { beanSpecies, processingMethods, roastLevels, grindGuide, originProfiles, flavorWheel } from "../data/coffeeKnowledge";
+import { beanSpecies, processingMethods, roastLevels, grindGuide, originProfiles, varieties, flavorWheel } from "../data/coffeeKnowledge";
 
 const flavorColor = Object.fromEntries(flavorWheel.map((c) => [c.key, c.color]));
 
@@ -13,17 +15,39 @@ function SectionHead({ num, title }) {
   );
 }
 
+function FlavorTags({ tags }) {
+  return (
+    <div className="flex flex-wrap gap-1.5 mt-4">
+      {tags.map((tag) => (
+        <span
+          key={tag}
+          className="font-mono text-[9px] uppercase tracking-wide px-2 py-1 text-kertas"
+          style={{ backgroundColor: flavorColor[tag] }}
+        >
+          {flavorWheel.find((c) => c.key === tag)?.label}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function DashboardPage() {
+  const [varietyFilter, setVarietyFilter] = useState("Semua");
+  const varietyCategories = ["Semua", "Klasik & Global", "Lokal Indonesia"];
+  const visibleVarieties =
+    varietyFilter === "Semua" ? varieties : varieties.filter((v) => v.category === varietyFilter);
+
   return (
     <div className="max-w-[1180px] mx-auto px-7">
       <DashboardHero />
+      <DashboardSectionNav />
 
-      <section className="py-11 border-b border-garis">
+      <section id="roda-rasa" className="py-11 border-b border-garis scroll-mt-32">
         <SectionHead num="01" title="Roda rasa kopi" />
         <FlavorWheel />
       </section>
 
-      <section className="py-11 border-b border-garis">
+      <section id="biji-kopi" className="py-11 border-b border-garis scroll-mt-32">
         <SectionHead num="02" title="Jenis biji kopi" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-garis border border-garis">
           {beanSpecies.map((b) => (
@@ -54,7 +78,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section className="py-11 border-b border-garis">
+      <section id="proses" className="py-11 border-b border-garis scroll-mt-32">
         <SectionHead num="03" title="Proses pasca panen (wash)" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-garis border border-garis">
           {processingMethods.map((p) => (
@@ -67,7 +91,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section className="py-11 border-b border-garis">
+      <section id="sangrai" className="py-11 border-b border-garis scroll-mt-32">
         <SectionHead num="04" title="Tingkat sangrai (roast level)" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {roastLevels.map((r) => (
@@ -83,7 +107,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section className="py-11 border-b border-garis">
+      <section id="gilingan" className="py-11 border-b border-garis scroll-mt-32">
         <SectionHead num="05" title="Ukuran gilingan" />
         <div className="border border-garis">
           {grindGuide.map((g, i) => (
@@ -106,7 +130,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section className="py-11 pb-16">
+      <section id="origin" className="py-11 border-b border-garis scroll-mt-32">
         <SectionHead num="06" title="Asal kopi (origin)" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-garis border border-garis">
           {originProfiles.map((o) => (
@@ -126,17 +150,44 @@ export default function DashboardPage() {
                 </div>
               </dl>
               <p className="text-xs text-tintasoft leading-relaxed mt-3 flex-1">{o.flavor}</p>
-              <div className="flex flex-wrap gap-1.5 mt-4">
-                {o.flavorTags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="font-mono text-[9px] uppercase tracking-wide px-2 py-1 text-kertas"
-                    style={{ backgroundColor: flavorColor[tag] }}
-                  >
-                    {flavorWheel.find((c) => c.key === tag)?.label}
-                  </span>
-                ))}
-              </div>
+              <FlavorTags tags={o.flavorTags} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="varietas" className="py-11 pb-16 scroll-mt-32">
+        <SectionHead num="07" title="Varietas kopi" />
+        <p className="text-sm text-tintasoft leading-relaxed max-w-[70ch] mb-6">
+          Origin menjelaskan di mana kopi tumbuh, varietas menjelaskan pohon kopi jenis apa yang
+          ditanam di sana. Satu origin bisa saja menanam beberapa varietas berbeda sekaligus.
+        </p>
+
+        <div className="flex flex-wrap gap-2 mb-6">
+          {varietyCategories.map((c) => (
+            <button
+              key={c}
+              onClick={() => setVarietyFilter(c)}
+              className={`font-mono text-xs uppercase tracking-wide px-3.5 py-2 border border-tinta cursor-pointer transition-colors ${
+                varietyFilter === c ? "bg-tinta text-kertas" : "bg-kertas text-tinta hover:bg-kertas2"
+              }`}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-garis border border-garis">
+          {visibleVarieties.map((v) => (
+            <div key={v.key} className="bg-kertas p-5 flex flex-col">
+              <span className="font-mono text-[10px] uppercase tracking-wide text-roastamber block mb-1.5">
+                {v.category}
+              </span>
+              <span className="font-display font-bold text-base block mb-3 leading-tight">{v.name}</span>
+              <p className="text-xs text-tintasoft leading-relaxed">{v.lineage}</p>
+              <p className="text-xs text-tinta leading-relaxed mt-3 font-medium">{v.flavor}</p>
+              <p className="text-xs text-tintasoft/80 leading-relaxed mt-2 italic flex-1">{v.note}</p>
+              <FlavorTags tags={v.flavorTags} />
             </div>
           ))}
         </div>

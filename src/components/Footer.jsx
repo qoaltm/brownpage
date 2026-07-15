@@ -125,7 +125,14 @@ export default function Footer() {
             Kontak & Informasi
           </h3>
           <div className="border border-tinta w-fit">
-            <div className="px-3.5 py-2.5 font-mono text-xs">+62 823 2380 9948</div>
+            <a
+              href="https://wa.me/6282323809948"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block px-3.5 py-2.5 font-mono text-xs hover:text-roastamber transition-colors"
+            >
+              +62 823 2380 9948
+            </a>
             <div className="px-3.5 py-2.5 bg-tinta text-kertas font-mono text-[11px] uppercase tracking-wide">
               Kontak & Informasi
             </div>
