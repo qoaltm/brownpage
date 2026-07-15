@@ -29,7 +29,7 @@ export default function ToolsPage() {
       />
 
       <p className="text-[11px] text-tintasoft/70 leading-relaxed mt-6 max-w-[70ch]">
-        Halaman ini berisi tautan afiliasi. Kopitaim bisa mendapat komisi kecil dari pembelian lewat
+        Halaman ini berisi tautan afiliasi. Brownpage bisa mendapat komisi kecil dari pembelian lewat
         tautan di sini, tanpa menambah biaya apa pun untuk kamu.
       </p>
 

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import logo from "../assets/kopitaim-logo.png";
+import logo from "../assets/brownpage-logo.png";
 
 const links = [
   { to: "/", label: "Dashboard", end: true },
@@ -14,7 +14,7 @@ export default function NavBar() {
     <header className="border-b border-garis sticky top-0 bg-kertas/95 backdrop-blur z-10">
       <div className="max-w-[1180px] mx-auto px-7 py-3.5 flex items-center justify-between gap-6">
         <NavLink to="/" className="shrink-0">
-          <img src={logo} alt="Kopitaim" className="h-6 w-auto" />
+          <img src={logo} alt="Brownpage" className="h-6 w-auto" />
         </NavLink>
         <nav className="flex items-center gap-1 font-mono text-xs uppercase tracking-wide">
           {links.map((link) => (

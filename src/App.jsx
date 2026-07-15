@@ -6,6 +6,8 @@ import DashboardPage from "./pages/DashboardPage";
 import TeknikPage from "./pages/TeknikPage";
 import ToolsPage from "./pages/ToolsPage";
 import AboutPage from "./pages/AboutPage";
+import SyaratKetentuanPage from "./pages/SyaratKetentuanPage";
+import KebijakanPrivasiPage from "./pages/KebijakanPrivasiPage";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -23,6 +25,8 @@ function AnimatedRoutes() {
           <Route path="/teknik" element={<TeknikPage />} />
           <Route path="/tools" element={<ToolsPage />} />
           <Route path="/tentang" element={<AboutPage />} />
+          <Route path="/syarat-dan-ketentuan" element={<SyaratKetentuanPage />} />
+          <Route path="/kebijakan-privasi" element={<KebijakanPrivasiPage />} />
         </Routes>
       </motion.div>
     </AnimatePresence>

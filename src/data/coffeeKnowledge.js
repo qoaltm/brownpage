@@ -4,7 +4,7 @@
 // A practical, 3-tier flavor wheel (category > subcategory > specific note).
 // Vocabulary follows the terms widely used across the specialty coffee
 // industry for cupping/tasting. The diagram itself (layout, colors, code)
-// is original, built for Kopitaim, not a reproduction of any single
+// is original, built for Brownpage, not a reproduction of any single
 // publisher's chart.
 export const flavorWheel = [
   {

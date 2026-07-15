@@ -3,7 +3,7 @@ export default function DashboardHero() {
     <section className="pt-16 pb-10 md:pt-24 md:pb-14">
       <div className="flex items-center gap-3 mb-6">
         <span className="h-px w-10 bg-roastamber" />
-        <span className="font-mono text-xs tracking-[0.12em] uppercase text-roastamber">Kopitaim</span>
+        <span className="font-mono text-xs tracking-[0.12em] uppercase text-roastamber">Brownpage</span>
       </div>
       <h1 className="font-display font-bold text-4xl md:text-6xl tracking-tight leading-[1.05] max-w-[20ch]">
         Panduan seduh manual, dari dasar sampai racikan siap pakai.
