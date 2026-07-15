@@ -28,11 +28,6 @@ export default function ToolsPage() {
         lede="Alat-alat dasar yang dipakai untuk seduh manual, dari menggiling sampai menuang. Klik salah satu untuk lihat pilihan dan beli."
       />
 
-      <p className="text-[11px] text-tintasoft/70 leading-relaxed mt-6 max-w-[70ch]">
-        Halaman ini berisi tautan afiliasi. Brownpage bisa mendapat komisi kecil dari pembelian lewat
-        tautan di sini, tanpa menambah biaya apa pun untuk kamu.
-      </p>
-
       <div className="flex flex-wrap gap-2 mt-6 mb-8">
         {categories.map((c) => (
           <button

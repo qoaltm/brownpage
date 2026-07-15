@@ -21,6 +21,17 @@ export default function useBrewCalculator() {
     setAgitation(r.agitation);
   }
 
+  function loadRecipe(saved) {
+    setRecipeKey(saved.recipeKey);
+    setDose(saved.dose);
+    setRatio(saved.ratio);
+    setTemp(saved.temp);
+    setGrind(saved.grind);
+    setAgitation(saved.agitation);
+    setSweetAcid(saved.sweetAcid);
+    setStrengthPours(saved.strengthPours);
+  }
+
   const schedule = useMemo(
     () => buildSchedule({ recipe: recipeKey, dose, ratio, temp, agitation, sweetAcid, strengthPours }),
     [recipeKey, dose, ratio, temp, agitation, sweetAcid, strengthPours]
@@ -35,6 +46,7 @@ export default function useBrewCalculator() {
     recipeKey, dose, ratio, temp, grind, agitation, sweetAcid, strengthPours,
     setDose, setRatio, setTemp, setGrind, setAgitation, setSweetAcid, setStrengthPours,
     selectRecipe,
+    loadRecipe,
     schedule, strength, iced,
     showMini: recipes[recipeKey].showMini,
   };

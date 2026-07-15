@@ -13,6 +13,7 @@ export const recipes = {
     desc: "5 tuangan, 40% atur rasa, 60% atur kekuatan.",
     dose: 20, ratio: 150, temp: 92, grind: 6, agitation: 1,
     showMini: true,
+    popular: true,
   },
   hoffmann: {
     key: "hoffmann",
@@ -21,6 +22,7 @@ export const recipes = {
     desc: "Bloom besar + 2 tuangan utama + swirl.",
     dose: 30, ratio: 167, temp: 95, grind: 5, agitation: 2,
     showMini: false,
+    popular: true,
   },
   kalita: {
     key: "kalita",

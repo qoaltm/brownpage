@@ -36,7 +36,7 @@ function TiktokIcon({ size = 16 }) {
 
 const featureLinks = [
   { to: "/teknik", label: "Kalkulator Rasio & Jadwal Tuang" },
-  { to: "/", label: "Roda Rasa & Kosakata Kopi" },
+  { to: "/kamus", label: "Kamus Kopi A-Z" },
   { to: "/tools", label: "Rekomendasi Tools Barista" },
 ];
 
@@ -44,6 +44,7 @@ const infoLinks = [
   { to: "/", label: "Dashboard" },
   { to: "/teknik", label: "Teknik" },
   { to: "/tools", label: "Tools" },
+  { to: "/kamus", label: "Kamus Kopi" },
   { to: "/tentang", label: "Tentang Kami" },
 ];
 

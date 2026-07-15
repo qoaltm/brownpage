@@ -6,6 +6,7 @@ import DashboardPage from "./pages/DashboardPage";
 import TeknikPage from "./pages/TeknikPage";
 import ToolsPage from "./pages/ToolsPage";
 import AboutPage from "./pages/AboutPage";
+import GlossaryPage from "./pages/GlossaryPage";
 import SyaratKetentuanPage from "./pages/SyaratKetentuanPage";
 import KebijakanPrivasiPage from "./pages/KebijakanPrivasiPage";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -25,6 +26,7 @@ function AnimatedRoutes() {
           <Route path="/" element={<DashboardPage />} />
           <Route path="/teknik" element={<TeknikPage />} />
           <Route path="/tools" element={<ToolsPage />} />
+          <Route path="/kamus" element={<GlossaryPage />} />
           <Route path="/tentang" element={<AboutPage />} />
           <Route path="/syarat-dan-ketentuan" element={<SyaratKetentuanPage />} />
           <Route path="/kebijakan-privasi" element={<KebijakanPrivasiPage />} />

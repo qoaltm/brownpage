@@ -1,5 +1,6 @@
 import PageHeader from "../components/PageHeader";
 import RecipeDropdown from "../components/RecipeDropdown";
+import SavedRecipesPanel from "../components/SavedRecipesPanel";
 import Controls from "../components/Controls";
 import ScheduleTimer from "../components/ScheduleTimer";
 import useBrewCalculator from "../hooks/useBrewCalculator";
@@ -27,6 +28,7 @@ export default function TeknikPage() {
       <section className="py-11 border-b border-garis">
         <SectionHead num="01" title="Pilih teknik" />
         <RecipeDropdown activeKey={brew.recipeKey} onSelect={brew.selectRecipe} />
+        <SavedRecipesPanel brew={brew} />
       </section>
 
       <Controls brew={brew} />

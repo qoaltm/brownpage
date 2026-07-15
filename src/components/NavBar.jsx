@@ -6,6 +6,7 @@ const links = [
   { to: "/", label: "Dashboard", end: true },
   { to: "/teknik", label: "Teknik" },
   { to: "/tools", label: "Tools" },
+  { to: "/kamus", label: "Kamus Kopi" },
   { to: "/tentang", label: "Tentang Kami" },
 ];
 

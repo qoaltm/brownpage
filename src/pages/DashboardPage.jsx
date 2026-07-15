@@ -79,7 +79,7 @@ export default function DashboardPage() {
       </section>
 
       <section id="proses" className="py-11 border-b border-garis scroll-mt-32">
-        <SectionHead num="03" title="Proses pasca panen (wash)" />
+        <SectionHead num="03" title="Proses pasca panen" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-garis border border-garis">
           {processingMethods.map((p) => (
             <div key={p.key} className="bg-kertas p-5">
