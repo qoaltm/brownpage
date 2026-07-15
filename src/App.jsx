@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import DashboardPage from "./pages/DashboardPage";
 import TeknikPage from "./pages/TeknikPage";
+import JurnalPage from "./pages/JurnalPage";
 import ToolsPage from "./pages/ToolsPage";
 import AboutPage from "./pages/AboutPage";
 import GlossaryPage from "./pages/GlossaryPage";
@@ -25,6 +26,7 @@ function AnimatedRoutes() {
         <Routes location={location}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/teknik" element={<TeknikPage />} />
+          <Route path="/jurnal" element={<JurnalPage />} />
           <Route path="/tools" element={<ToolsPage />} />
           <Route path="/kamus" element={<GlossaryPage />} />
           <Route path="/tentang" element={<AboutPage />} />

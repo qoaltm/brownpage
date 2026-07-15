@@ -5,6 +5,7 @@ import logo from "../assets/brownpage-logo.png";
 const links = [
   { to: "/", label: "Dashboard", end: true },
   { to: "/teknik", label: "Teknik" },
+  { to: "/jurnal", label: "Jurnal Seduh" },
   { to: "/tools", label: "Tools" },
   { to: "/kamus", label: "Kamus Kopi" },
   { to: "/tentang", label: "Tentang Kami" },

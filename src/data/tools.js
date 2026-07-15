@@ -1,6 +1,9 @@
 // Data etalase alat seduh. Ganti "name", "desc", dan terutama "affiliateUrl"
 // dengan produk dan link afiliasi asli kamu. "icon" merujuk ke komponen
 // lucide-react yang dipetakan di ToolsPage.jsx.
+//
+// price, difficulty, portability, brewTime, dan bestFor dipakai di fitur
+// "Bandingkan tools" supaya ada atribut konkret buat dibandingkan berdampingan.
 
 export const toolCategories = [
   "Grinder",
@@ -22,6 +25,11 @@ export const tools = [
     name: "Hand Grinder",
     desc: "Gilingan portable yang digerakkan tangan. Cocok untuk starter kit di rumah atau dibawa traveling.",
     affiliateUrl: "#",
+    price: "$",
+    difficulty: "Pemula",
+    portability: "Tinggi",
+    brewTime: "-",
+    bestFor: "Traveling & starter kit",
   },
   {
     key: "electric-grinder",
@@ -30,6 +38,11 @@ export const tools = [
     name: "Electric Grinder",
     desc: "Hasil gilingan lebih konsisten dan cepat, cocok untuk pemakaian harian di kedai.",
     affiliateUrl: "#",
+    price: "$$$",
+    difficulty: "Pemula",
+    portability: "Rendah",
+    brewTime: "-",
+    bestFor: "Pemakaian harian volume tinggi",
   },
   {
     key: "gooseneck-kettle",
@@ -38,6 +51,11 @@ export const tools = [
     name: "Gooseneck Kettle",
     desc: "Ketel dengan corong panjang untuk kontrol aliran air yang presisi saat pour-over.",
     affiliateUrl: "#",
+    price: "$$",
+    difficulty: "Menengah",
+    portability: "Sedang",
+    brewTime: "-",
+    bestFor: "Kontrol tuangan presisi",
   },
   {
     key: "digital-scale",
@@ -46,6 +64,11 @@ export const tools = [
     name: "Timbangan Digital + Timer",
     desc: "Wajib punya untuk menakar rasio kopi dan air secara akurat, idealnya sudah ada timer bawaan.",
     affiliateUrl: "#",
+    price: "$$",
+    difficulty: "Pemula",
+    portability: "Sedang",
+    brewTime: "-",
+    bestFor: "Takaran rasio yang akurat",
   },
   {
     key: "v60",
@@ -54,6 +77,11 @@ export const tools = [
     name: "V60 Dripper",
     desc: "Dripper kerucut klasik, dipakai untuk metode seperti Ultimate V60 dan 4:6 Method.",
     affiliateUrl: "#",
+    price: "$",
+    difficulty: "Menengah",
+    portability: "Tinggi",
+    brewTime: "2.5-3.5 menit",
+    bestFor: "Profil rasa cerah & clean",
   },
   {
     key: "kalita-wave",
@@ -62,6 +90,11 @@ export const tools = [
     name: "Kalita Wave Dripper",
     desc: "Dasar rata dengan 3 lubang, ekstraksi lebih merata dan konsisten antar seduhan.",
     affiliateUrl: "#",
+    price: "$",
+    difficulty: "Pemula",
+    portability: "Tinggi",
+    brewTime: "3-4 menit",
+    bestFor: "Konsistensi antar seduhan",
   },
   {
     key: "chemex",
@@ -70,6 +103,11 @@ export const tools = [
     name: "Chemex",
     desc: "Brewer sekaligus server kaca dalam satu alat, filter tebal menghasilkan cangkir yang bersih.",
     affiliateUrl: "#",
+    price: "$$",
+    difficulty: "Menengah",
+    portability: "Rendah",
+    brewTime: "4-5 menit",
+    bestFor: "Cangkir bersih untuk tamu banyak",
   },
   {
     key: "french-press",
@@ -78,6 +116,11 @@ export const tools = [
     name: "French Press",
     desc: "Metode immersion klasik, cocok untuk kopi dengan body tebal dan proses yang sederhana.",
     affiliateUrl: "#",
+    price: "$",
+    difficulty: "Pemula",
+    portability: "Sedang",
+    brewTime: "4 menit",
+    bestFor: "Body tebal, seduh santai",
   },
   {
     key: "aeropress",
@@ -86,6 +129,11 @@ export const tools = [
     name: "AeroPress",
     desc: "Brewer portable serba bisa, cepat diseduh dan mudah dibawa bepergian.",
     affiliateUrl: "#",
+    price: "$$",
+    difficulty: "Pemula",
+    portability: "Tinggi",
+    brewTime: "1-2 menit",
+    bestFor: "Cepat & portable",
   },
   {
     key: "moka-pot",
@@ -94,6 +142,11 @@ export const tools = [
     name: "Moka Pot",
     desc: "Brewer stovetop bertekanan uap, menghasilkan kopi pekat mendekati karakter espresso.",
     affiliateUrl: "#",
+    price: "$$",
+    difficulty: "Menengah",
+    portability: "Sedang",
+    brewTime: "5-8 menit",
+    bestFor: "Karakter mendekati espresso",
   },
   {
     key: "server",
@@ -102,6 +155,11 @@ export const tools = [
     name: "Server / Carafe",
     desc: "Wadah penampung hasil seduhan sebelum dituang ke cangkir, memudahkan menyajikan untuk banyak orang.",
     affiliateUrl: "#",
+    price: "$$",
+    difficulty: "Pemula",
+    portability: "Rendah",
+    brewTime: "-",
+    bestFor: "Menyajikan untuk banyak orang",
   },
   {
     key: "filter-paper",
@@ -110,5 +168,10 @@ export const tools = [
     name: "Filter Paper",
     desc: "Filter sekali pakai, pastikan ukuran dan bentuknya sesuai dengan dripper yang dipakai.",
     affiliateUrl: "#",
+    price: "$",
+    difficulty: "Pemula",
+    portability: "Tinggi",
+    brewTime: "-",
+    bestFor: "Pelengkap dripper apa pun",
   },
 ];
