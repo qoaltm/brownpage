@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import DashboardPage from "./pages/DashboardPage";
 import TeknikPage from "./pages/TeknikPage";
+import ToolsPage from "./pages/ToolsPage";
 import AboutPage from "./pages/AboutPage";
 
 function AnimatedRoutes() {
@@ -20,6 +21,7 @@ function AnimatedRoutes() {
         <Routes location={location}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/teknik" element={<TeknikPage />} />
+          <Route path="/tools" element={<ToolsPage />} />
           <Route path="/tentang" element={<AboutPage />} />
         </Routes>
       </motion.div>

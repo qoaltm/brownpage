@@ -5,6 +5,7 @@ import logo from "../assets/kopitaim-logo.png";
 const links = [
   { to: "/", label: "Dashboard", end: true },
   { to: "/teknik", label: "Teknik" },
+  { to: "/tools", label: "Tools" },
   { to: "/tentang", label: "Tentang Kami" },
 ];
 

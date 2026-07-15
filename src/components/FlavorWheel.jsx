@@ -8,10 +8,24 @@ const R0 = 46; // empty core
 const R1 = 100; // end of ring 1 (category)
 const R2 = 150; // end of ring 2 (subcategory)
 const R3 = 190; // end of ring 3 (specific note)
+const HOVER_LIFT = 7; // how far the hovered wedge grows outward only
 
 function polar(cx, cy, r, angleDeg) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
   return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+// Roughly how wide one monospace character is relative to its font size.
+const CHAR_WIDTH_RATIO = 0.62;
+
+// A label reads radially (its text width runs along the ring's thickness),
+// so it only fits if the text width stays inside the ring band AND the
+// wedge is tangentially wide enough to not collide with its neighbours.
+function labelFits(text, fontSize, bandWidth, spanDeg, radiusAtMid) {
+  const textWidth = text.length * fontSize * CHAR_WIDTH_RATIO;
+  if (textWidth > bandWidth - 6) return false;
+  const minSpanDeg = ((fontSize * 1.1) / radiusAtMid) * (180 / Math.PI);
+  return spanDeg > minSpanDeg;
 }
 
 function arcPath(startAngle, endAngle, rInner, rOuter) {
@@ -80,44 +94,62 @@ function RadialLabel({ text, radius, midAngle, fontSize, fill }) {
   );
 }
 
-const wedgeStyle = { transformBox: "fill-box", transformOrigin: "center" };
-
 export default function FlavorWheel() {
   const layout = useMemo(() => buildLayout(flavorWheel), []);
   const wrapRef = useRef(null);
-  const [hover, setHover] = useState(null); // { label, x, y }
+  // hoverWedge drives BOTH the tooltip and a single top-layer highlight
+  // wedge, so there is only one source of truth for "what's hovered".
+  const [hoverWedge, setHoverWedge] = useState(null);
+  const [hoverPos, setHoverPos] = useState({ x: 0, y: 0 });
   const [selected, setSelected] = useState({
     path: [layout[0].label],
     desc: layout[0].desc,
     color: layout[0].color,
   });
 
-  function showTooltip(label, e) {
+  function trackPointer(e) {
     const rect = wrapRef.current.getBoundingClientRect();
-    setHover({ label, x: e.clientX - rect.left, y: e.clientY - rect.top });
+    setHoverPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  }
+
+  function clearHover() {
+    setHoverWedge(null);
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[460px_1fr] gap-8 items-center">
       <div className="relative" ref={wrapRef}>
-        <svg viewBox="0 0 500 500" className="w-full max-w-[460px] mx-auto" style={{ overflow: "visible" }}>
+        <svg
+          viewBox="0 0 500 500"
+          className="w-full max-w-[460px] mx-auto"
+          style={{ overflow: "visible" }}
+          onMouseLeave={clearHover}
+        >
           {layout.map((cat) => (
             <g key={cat.key}>
               {/* ring 1: category */}
-              <motion.path
+              <path
                 d={arcPath(cat.start, cat.end, R0, R1)}
                 fill={cat.color}
                 stroke="#F2EFE6"
                 strokeWidth="1.5"
-                style={wedgeStyle}
-                whileHover={{ scale: 1.045 }}
-                transition={{ type: "spring", stiffness: 320, damping: 22 }}
                 className="cursor-pointer"
                 onClick={() => setSelected({ path: [cat.label], desc: cat.desc, color: cat.color })}
-                onMouseMove={(e) => showTooltip(cat.label, e)}
-                onMouseLeave={() => setHover(null)}
+                onMouseMove={trackPointer}
+                onMouseEnter={() =>
+                  setHoverWedge({
+                    start: cat.start,
+                    end: cat.end,
+                    rInner: R0,
+                    rOuter: R1,
+                    opacity: 1,
+                    color: cat.color,
+                    label: cat.label,
+                  })
+                }
+                onMouseLeave={clearHover}
               />
-              {cat.end - cat.start > 10 && (
+              {labelFits(cat.label.split(" ")[0], 10.5, R1 - R0, cat.end - cat.start, (R0 + R1) / 2) && (
                 <RadialLabel
                   text={cat.label.split(" ")[0]}
                   radius={(R0 + R1) / 2}
@@ -129,85 +161,102 @@ export default function FlavorWheel() {
 
               {/* ring 2: subcategory */}
               {cat.sub.map((sc) => (
-                <g key={sc.key}>
-                  <motion.path
-                    d={arcPath(sc.start, sc.end, R1, R2)}
-                    fill={cat.color}
-                    opacity={0.72}
-                    stroke="#F2EFE6"
-                    strokeWidth="1"
-                    style={wedgeStyle}
-                    whileHover={{ scale: 1.04 }}
-                    transition={{ type: "spring", stiffness: 320, damping: 22 }}
-                    className="cursor-pointer"
-                    onClick={() => setSelected({ path: [cat.label, sc.label], desc: sc.desc, color: cat.color })}
-                    onMouseMove={(e) => showTooltip(sc.label, e)}
-                    onMouseLeave={() => setHover(null)}
-                  />
-                  {sc.end - sc.start > 13 && (
-                    <RadialLabel
-                      text={sc.label}
-                      radius={(R1 + R2) / 2}
-                      midAngle={(sc.start + sc.end) / 2}
-                      fontSize="8"
-                      fill="#F2EFE6"
-                    />
-                  )}
-                </g>
+                <path
+                  key={sc.key}
+                  d={arcPath(sc.start, sc.end, R1, R2)}
+                  fill={cat.color}
+                  opacity={0.72}
+                  stroke="#F2EFE6"
+                  strokeWidth="1"
+                  className="cursor-pointer"
+                  onClick={() => setSelected({ path: [cat.label, sc.label], desc: sc.desc, color: cat.color })}
+                  onMouseMove={trackPointer}
+                  onMouseEnter={() =>
+                    setHoverWedge({
+                      start: sc.start,
+                      end: sc.end,
+                      rInner: R1,
+                      rOuter: R2,
+                      opacity: 0.72,
+                      color: cat.color,
+                      label: sc.label,
+                    })
+                  }
+                  onMouseLeave={clearHover}
+                />
               ))}
 
               {/* ring 3: specific note */}
               {cat.sub.map((sc) =>
                 sc.notes.map((n) => (
-                  <g key={n.note}>
-                    <motion.path
-                      d={arcPath(n.start, n.end, R2, R3)}
-                      fill={cat.color}
-                      opacity={0.45}
-                      stroke="#F2EFE6"
-                      strokeWidth="0.75"
-                      style={wedgeStyle}
-                      whileHover={{ scale: 1.035 }}
-                      transition={{ type: "spring", stiffness: 320, damping: 22 }}
-                      className="cursor-pointer"
-                      onClick={() =>
-                        setSelected({
-                          path: [cat.label, sc.label, n.note],
-                          desc: noteDescriptions[n.note] ?? sc.desc,
-                          color: cat.color,
-                        })
-                      }
-                      onMouseMove={(e) => showTooltip(n.note, e)}
-                      onMouseLeave={() => setHover(null)}
-                    />
-                    {n.end - n.start > 7 && (
-                      <RadialLabel
-                        text={n.note}
-                        radius={(R2 + R3) / 2}
-                        midAngle={(n.start + n.end) / 2}
-                        fontSize="6.5"
-                        fill="#3B2A20"
-                      />
-                    )}
-                  </g>
+                  <path
+                    key={n.note}
+                    d={arcPath(n.start, n.end, R2, R3)}
+                    fill={cat.color}
+                    opacity={0.45}
+                    stroke="#F2EFE6"
+                    strokeWidth="0.75"
+                    className="cursor-pointer"
+                    onClick={() =>
+                      setSelected({
+                        path: [cat.label, sc.label, n.note],
+                        desc: noteDescriptions[n.note] ?? sc.desc,
+                        color: cat.color,
+                      })
+                    }
+                    onMouseMove={trackPointer}
+                    onMouseEnter={() =>
+                      setHoverWedge({
+                        start: n.start,
+                        end: n.end,
+                        rInner: R2,
+                        rOuter: R3,
+                        opacity: 0.45,
+                        color: cat.color,
+                        label: n.note,
+                      })
+                    }
+                    onMouseLeave={clearHover}
+                  />
                 ))
               )}
             </g>
           ))}
+
+          {/* Single top-layer highlight: painted last, so it always sits
+              above every wedge underneath it. Grows outward only (rOuter
+              increases, rInner stays put), never bleeding toward the core. */}
+          <AnimatePresence>
+            {hoverWedge && (
+              <motion.path
+                key="hover-highlight"
+                d={arcPath(hoverWedge.start, hoverWedge.end, hoverWedge.rInner, hoverWedge.rOuter + HOVER_LIFT)}
+                fill={hoverWedge.color}
+                opacity={hoverWedge.opacity}
+                stroke="#F2EFE6"
+                strokeWidth="1.5"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: hoverWedge.opacity, filter: `drop-shadow(0 0 7px ${hoverWedge.color})` }}
+                exit={{ opacity: 0, filter: "drop-shadow(0 0 0px transparent)" }}
+                transition={{ duration: 0.12 }}
+                style={{ pointerEvents: "none" }}
+              />
+            )}
+          </AnimatePresence>
         </svg>
 
         <AnimatePresence>
-          {hover && (
+          {hoverWedge && (
             <motion.div
               key="tooltip"
               initial={{ opacity: 0, scale: 0.9, y: 4 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.12 }}
-              className="pointer-events-none absolute z-20 whitespace-nowrap bg-tinta text-kertas text-[11px] font-mono px-2.5 py-1.5 shadow-[3px_3px_0_0_rgba(28,23,18,0.25)]"
-              style={{ left: hover.x, top: hover.y, transform: "translate(-50%, -135%)" }}
+              className="pointer-events-none absolute z-20 whitespace-nowrap bg-tinta text-kertas text-[11px] font-mono px-4 py-2.5 shadow-[3px_3px_0_0_rgba(28,23,18,0.25),0_0_20px_4px_rgba(184,114,30,0.5)]"
+              style={{ left: hoverPos.x, top: hoverPos.y, transform: "translate(-50%, -135%)" }}
             >
-              {hover.label}
+              {hoverWedge.label}
             </motion.div>
           )}
         </AnimatePresence>

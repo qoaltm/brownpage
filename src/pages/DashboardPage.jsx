@@ -1,6 +1,8 @@
-import PageHeader from "../components/PageHeader";
+import DashboardHero from "../components/DashboardHero";
 import FlavorWheel from "../components/FlavorWheel";
-import { beanSpecies, processingMethods, roastLevels, grindGuide } from "../data/coffeeKnowledge";
+import { beanSpecies, processingMethods, roastLevels, grindGuide, originProfiles, flavorWheel } from "../data/coffeeKnowledge";
+
+const flavorColor = Object.fromEntries(flavorWheel.map((c) => [c.key, c.color]));
 
 function SectionHead({ num, title }) {
   return (
@@ -14,11 +16,7 @@ function SectionHead({ num, title }) {
 export default function DashboardPage() {
   return (
     <div className="max-w-[1180px] mx-auto px-7">
-      <PageHeader
-        eyebrow="Prolog by Kopitaim"
-        title="Dasar-dasar yang wajib dikuasai barista"
-        lede="Sebelum masuk ke rasio dan jadwal tuang di halaman Teknik, ini kosakata dasar yang bantu kamu membaca dan mendeskripsikan kopi: roda rasa, jenis biji, proses pasca panen, tingkat sangrai, dan ukuran gilingan."
-      />
+      <DashboardHero />
 
       <section className="py-11 border-b border-garis">
         <SectionHead num="01" title="Roda rasa kopi" />
@@ -85,7 +83,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section className="py-11 pb-16">
+      <section className="py-11 border-b border-garis">
         <SectionHead num="05" title="Ukuran gilingan" />
         <div className="border border-garis">
           {grindGuide.map((g, i) => (
@@ -103,6 +101,42 @@ export default function DashboardPage() {
               </div>
               <span className="font-display font-bold text-sm w-32 shrink-0">{g.label}</span>
               <span className="text-xs text-tintasoft">{g.use}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="py-11 pb-16">
+        <SectionHead num="06" title="Asal kopi (origin)" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-garis border border-garis">
+          {originProfiles.map((o) => (
+            <div key={o.key} className="bg-kertas p-5 flex flex-col">
+              <span className="font-mono text-[10px] uppercase tracking-wide text-roastamber block mb-1.5">
+                {o.country}
+              </span>
+              <span className="font-display font-bold text-base block mb-3 leading-tight">{o.region}</span>
+              <dl className="space-y-2 text-xs">
+                <div className="flex justify-between gap-2">
+                  <dt className="text-tintasoft shrink-0">Ketinggian</dt>
+                  <dd className="font-mono text-right">{o.altitude}</dd>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <dt className="text-tintasoft shrink-0">Proses</dt>
+                  <dd className="font-mono text-right">{o.process}</dd>
+                </div>
+              </dl>
+              <p className="text-xs text-tintasoft leading-relaxed mt-3 flex-1">{o.flavor}</p>
+              <div className="flex flex-wrap gap-1.5 mt-4">
+                {o.flavorTags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="font-mono text-[9px] uppercase tracking-wide px-2 py-1 text-kertas"
+                    style={{ backgroundColor: flavorColor[tag] }}
+                  >
+                    {flavorWheel.find((c) => c.key === tag)?.label}
+                  </span>
+                ))}
+              </div>
             </div>
           ))}
         </div>
