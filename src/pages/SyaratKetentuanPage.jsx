@@ -27,12 +27,16 @@ export default function SyaratKetentuanPage() {
         </p>
       </Section>
 
-      <Section title="Penggunaan cookie">
+      <Section title="Cookie dan pelacakan">
         <p>
-          Website ini dapat memakai cookie untuk keperluan teknis dasar dan statistik penggunaan, misalnya
-          mengingat preferensi tampilan atau menganalisis halaman mana yang paling sering diakses. Dengan
-          terus memakai Brownpage, kamu menyetujui penggunaan cookie yang diperlukan untuk operasional
-          website.
+          Saat ini Brownpage belum memakai cookie pelacakan atau layanan analitik pihak ketiga apa
+          pun. Situs ini murni berjalan di sisi browser kamu tanpa mengirim data penggunaan ke
+          server pihak ketiga.
+        </p>
+        <p>
+          Kalau ke depannya Brownpage menambahkan cookie atau analitik (misalnya untuk memahami
+          halaman mana yang paling sering diakses), bagian ini akan diperbarui lebih dulu sebelum
+          fitur tersebut aktif.
         </p>
       </Section>
 
