@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Syne", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-mono: "DM Mono", monospace;
+
+  --color-kertas: #F2EFE6;
+  --color-kertas2: #EAE5D6;
+  --color-tinta: #1C1712;
+  --color-tintasoft: #5B5142;
+  --color-roastamber: #B8721E;
+  --color-karamel: #D9A85C;
+  --color-espresso: #3B2314;
+  --color-garis: #D8CFB8;
+  --color-hijauok: #4C6B4F;
+}
+
+::selection {
+  background: var(--color-roastamber);
+  color: var(--color-kertas);
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+}
+
+/* Range input thumb styling — not cleanly expressible as Tailwind utilities */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--color-garis);
+  outline: none;
+  border-radius: 0;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--color-tinta);
+  border: 2px solid var(--color-tinta);
+  border-radius: 50%;
+  cursor: pointer;
+}
+input[type="range"]:active::-webkit-slider-thumb {
+  background: var(--color-roastamber);
+  border-color: var(--color-roastamber);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--color-tinta);
+  border: 2px solid var(--color-tinta);
+  border-radius: 50%;
+  cursor: pointer;
+}
