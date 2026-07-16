@@ -315,6 +315,15 @@ export const originProfiles = [
     flavorTags: ["nuttycocoa", "sweet"],
   },
   {
+    key: "java-gununghalu",
+    country: "Indonesia",
+    region: "Gunung Halu, Bandung Barat, Jawa Barat",
+    altitude: "1.200-1.800 mdpl",
+    process: "Washed, Honey, Natural, Wine (anaerobic)",
+    flavor: "Manis dengan sentuhan lemon dan black tea, keasaman cukup dominan, serta nada rempah segar dan brown sugar. Proses honey menonjolkan aroma floral, proses wine memberi karakter fermentasi yang lebih kompleks.",
+    flavorTags: ["fruity", "spices"],
+  },
+  {
     key: "ethiopia-yirgacheffe",
     country: "Ethiopia",
     region: "Yirgacheffe",
@@ -559,7 +568,7 @@ export const varieties = [
     key: "s795",
     name: "S795 (Jember)",
     category: "Lokal Indonesia",
-    lineage: "Hibrida Kent (mutasi Typica dari India) dan S288 (persilangan alami arabika-liberika), dikembangkan di India lalu diperkenalkan ke Indonesia lewat Jember tahun 1970-an.",
+    lineage: "Hibrida Kent (mutasi Typica dari India) dan S288 (persilangan alami arabika-liberika), dikembangkan di India lalu diperkenalkan ke Indonesia lewat Jember tahun 1970-an. Di Indonesia dikenal juga sebagai bagian dari keluarga 'Lini-S' atau 'S-Line'.",
     flavor: "Manis seperti maple syrup dan gula merah, keasaman rendah, karakter mellow.",
     note: "Gampang dibudidayakan di berbagai iklim mikro. Umum ditemukan di Bali dan Toraja (kadang disebut juga 'Jember').",
     flavorTags: ["sweet"],
@@ -572,6 +581,15 @@ export const varieties = [
     flavor: "Cenderung earthy dan lebih netral, karakter arabikanya tidak setajam varietas murni.",
     note: "Sangat tahan karat daun, jadi induk genetik penting di balik Catimor, Sarchimor, dan Sigarar Utang.",
     flavorTags: ["greenveg"],
+  },
+  {
+    key: "kartika",
+    name: "Kartika",
+    category: "Lokal Indonesia",
+    lineage: "Nama 'Kartika' adalah singkatan dari 'Kopi Arabika Tipe Katai', seleksi bertipe Catuai (dwarf) yang jadi salah satu varietas anjuran dalam program pemuliaan arabika Indonesia.",
+    flavor: "Pekat dan cukup kuat, karakter khasnya lebih ke body dan kekuatan rasa dibanding kompleksitas asam.",
+    note: "Pohon pendek dan produktif. Salah satu varietas yang ditemukan berdampingan dengan Typica, S795, dan Sigarar Utang di kawasan Java Preanger, termasuk Gunung Halu.",
+    flavorTags: ["nuttycocoa"],
   },
 ];
 
