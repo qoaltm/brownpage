@@ -10,6 +10,15 @@ const R2 = 150; // end of ring 2 (subcategory)
 const R3 = 190; // end of ring 3 (specific note)
 const HOVER_LIFT = 7; // how far the hovered wedge grows outward only
 
+function hexToRgba(hex, alpha) {
+  const clean = hex.replace("#", "");
+  const bigint = parseInt(clean, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 function polar(cx, cy, r, angleDeg) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
   return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
@@ -101,11 +110,13 @@ export default function FlavorWheel() {
   // wedge, so there is only one source of truth for "what's hovered".
   const [hoverWedge, setHoverWedge] = useState(null);
   const [hoverPos, setHoverPos] = useState({ x: 0, y: 0 });
-  const [selected, setSelected] = useState({
-    path: [layout[0].label],
-    desc: layout[0].desc,
-    color: layout[0].color,
-  });
+
+  // activeCategory/activeSub/activeNote drive both the right-side panel
+  // AND double as the click-through drill-down buttons, so wheel clicks
+  // and button clicks stay in sync through one source of truth.
+  const [activeCategory, setActiveCategory] = useState(layout[0]);
+  const [activeSub, setActiveSub] = useState(null);
+  const [activeNote, setActiveNote] = useState(null);
 
   function trackPointer(e) {
     const rect = wrapRef.current.getBoundingClientRect();
@@ -115,6 +126,38 @@ export default function FlavorWheel() {
   function clearHover() {
     setHoverWedge(null);
   }
+
+  function selectCategory(cat) {
+    setActiveCategory(cat);
+    setActiveSub(null);
+    setActiveNote(null);
+  }
+
+  function selectSub(cat, sc) {
+    setActiveCategory(cat);
+    setActiveSub(sc);
+    setActiveNote(null);
+  }
+
+  function selectNote(cat, sc, note) {
+    setActiveCategory(cat);
+    setActiveSub(sc);
+    setActiveNote(note);
+  }
+
+  const selected = useMemo(() => {
+    if (activeNote) {
+      return {
+        path: [activeCategory.label, activeSub.label, activeNote],
+        desc: noteDescriptions[activeNote] ?? activeSub.desc,
+        color: activeCategory.color,
+      };
+    }
+    if (activeSub) {
+      return { path: [activeCategory.label, activeSub.label], desc: activeSub.desc, color: activeCategory.color };
+    }
+    return { path: [activeCategory.label], desc: activeCategory.desc, color: activeCategory.color };
+  }, [activeCategory, activeSub, activeNote]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[460px_1fr] gap-8 items-center">
@@ -134,7 +177,7 @@ export default function FlavorWheel() {
                 stroke="#F2EFE6"
                 strokeWidth="1.5"
                 className="cursor-pointer"
-                onClick={() => setSelected({ path: [cat.label], desc: cat.desc, color: cat.color })}
+                onClick={() => selectCategory(cat)}
                 onMouseMove={trackPointer}
                 onMouseEnter={() =>
                   setHoverWedge({
@@ -169,7 +212,7 @@ export default function FlavorWheel() {
                   stroke="#F2EFE6"
                   strokeWidth="1"
                   className="cursor-pointer"
-                  onClick={() => setSelected({ path: [cat.label, sc.label], desc: sc.desc, color: cat.color })}
+                  onClick={() => selectSub(cat, sc)}
                   onMouseMove={trackPointer}
                   onMouseEnter={() =>
                     setHoverWedge({
@@ -197,13 +240,7 @@ export default function FlavorWheel() {
                     stroke="#F2EFE6"
                     strokeWidth="0.75"
                     className="cursor-pointer"
-                    onClick={() =>
-                      setSelected({
-                        path: [cat.label, sc.label, n.note],
-                        desc: noteDescriptions[n.note] ?? sc.desc,
-                        color: cat.color,
-                      })
-                    }
+                    onClick={() => selectNote(cat, sc, n.note)}
                     onMouseMove={trackPointer}
                     onMouseEnter={() =>
                       setHoverWedge({
@@ -281,9 +318,54 @@ export default function FlavorWheel() {
             <p className="mt-2 text-sm leading-relaxed text-tintasoft max-w-[55ch]">{selected.desc}</p>
           </motion.div>
         </AnimatePresence>
-        <p className="mt-4 text-xs text-tintasoft/70">
-          Klik ring mana pun, kategori, subkategori, atau catatan spesifik, untuk menjelajah roda rasa.
-          Arahkan kursor untuk lihat nama catatan yang teksnya tidak muat ditampilkan.
+
+        {/* Layer 2: tombol subkategori dari kategori yang aktif */}
+        <div className="flex flex-wrap gap-2 mt-5">
+          {activeCategory.sub.map((sc) => {
+            const isActive = activeSub?.key === sc.key;
+            return (
+              <button
+                key={sc.key}
+                onClick={() => selectSub(activeCategory, sc)}
+                className="font-mono text-[11px] uppercase tracking-wide px-3 py-1.5 border cursor-pointer transition-colors"
+                style={
+                  isActive
+                    ? { backgroundColor: activeCategory.color, borderColor: activeCategory.color, color: "#F2EFE6" }
+                    : { backgroundColor: "transparent", borderColor: "var(--color-garis)", color: "var(--color-tintasoft)" }
+                }
+              >
+                {sc.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Layer 3: tombol catatan spesifik dari subkategori yang aktif */}
+        {activeSub && (
+          <div className="flex flex-wrap gap-1.5 mt-3">
+            {activeSub.notes.map((n) => {
+              const isActive = activeNote === n.note;
+              return (
+                <button
+                  key={n.note}
+                  onClick={() => selectNote(activeCategory, activeSub, n.note)}
+                  className="font-mono text-[10px] px-2.5 py-1 border cursor-pointer transition-colors"
+                  style={
+                    isActive
+                      ? { backgroundColor: hexToRgba(activeCategory.color, 0.32), borderColor: activeCategory.color, color: "var(--color-tinta)" }
+                      : { backgroundColor: "transparent", borderColor: "var(--color-garis)", color: "var(--color-tintasoft)" }
+                  }
+                >
+                  {n.note}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        <p className="mt-5 text-xs text-tintasoft/70">
+          Klik ring mana pun di roda, atau tombol di atas, untuk menjelajah roda rasa, keduanya saling
+          sinkron. Arahkan kursor ke roda untuk lihat nama catatan yang teksnya tidak muat ditampilkan.
         </p>
       </div>
     </div>
