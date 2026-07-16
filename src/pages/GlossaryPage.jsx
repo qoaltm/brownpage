@@ -1,8 +1,15 @@
 import { useMemo, useState } from "react";
 import PageHeader from "../components/PageHeader";
+import usePageMeta from "../hooks/usePageMeta";
 import { glossaryTerms, glossaryCategories } from "../data/glossary";
 
 export default function GlossaryPage() {
+  usePageMeta({
+    title: "Kamus Kopi",
+    description:
+      "Istilah seduh manual, proses pasca panen, tingkat sangrai, ukuran gilingan, dan roda rasa kopi dari A sampai Z.",
+    path: "/kamus",
+  });
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("Semua");
 

@@ -1,4 +1,5 @@
 import PageHeader from "../components/PageHeader";
+import usePageMeta from "../hooks/usePageMeta";
 import RecipeDropdown from "../components/RecipeDropdown";
 import Controls from "../components/Controls";
 import ScheduleTimer from "../components/ScheduleTimer";
@@ -14,6 +15,12 @@ function SectionHead({ num, title }) {
 }
 
 export default function TeknikPage() {
+  usePageMeta({
+    title: "Teknik Seduh Manual",
+    description:
+      "Pilih teknik seduh manual, atur dosis/rasio/suhu/gilingan sesuai selera, lalu ikuti jadwal tuang dan timer otomatis.",
+    path: "/teknik",
+  });
   const brew = useBrewCalculator();
 
   return (

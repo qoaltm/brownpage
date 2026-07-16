@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import PageHeader from "../components/PageHeader";
+import usePageMeta from "../hooks/usePageMeta";
 import StarRating from "../components/StarRating";
 import FlavorTagPicker from "../components/FlavorTagPicker";
 import useCuppingLog from "../hooks/useCuppingLog";
@@ -29,6 +30,12 @@ function fmtDate(ts) {
 }
 
 export default function JurnalPage() {
+  usePageMeta({
+    title: "Jurnal Seduh",
+    description:
+      "Catat kopi yang kamu seduh, teknik dan parameternya, rasa yang muncul, dan rating tiap seduhan. Tersimpan di browser sendiri.",
+    path: "/jurnal",
+  });
   const { entries, addEntry, removeEntry } = useCuppingLog();
   const [form, setForm] = useState(EMPTY_FORM);
 

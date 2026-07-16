@@ -1,6 +1,13 @@
 import PageHeader from "../components/PageHeader";
+import usePageMeta from "../hooks/usePageMeta";
 
 export default function AboutPage() {
+  usePageMeta({
+    title: "Tentang Brownpage",
+    description:
+      "Brownpage adalah alat bantu gratis untuk barista dan penikmat kopi rumahan, dibangun dan dirawat secara mandiri.",
+    path: "/tentang",
+  });
   return (
     <div className="max-w-[1180px] mx-auto px-7">
       <PageHeader eyebrow="Tentang" title="Tentang Brownpage" />

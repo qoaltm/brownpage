@@ -1,4 +1,5 @@
 import PageHeader from "../components/PageHeader";
+import usePageMeta from "../hooks/usePageMeta";
 
 function Section({ title, children }) {
   return (
@@ -10,6 +11,11 @@ function Section({ title, children }) {
 }
 
 export default function KebijakanPrivasiPage() {
+  usePageMeta({
+    title: "Kebijakan Privasi",
+    description: "Informasi apa saja yang Brownpage kumpulkan dan bagaimana informasi tersebut dipakai.",
+    path: "/kebijakan-privasi",
+  });
   return (
     <div className="max-w-[1180px] mx-auto px-7">
       <PageHeader

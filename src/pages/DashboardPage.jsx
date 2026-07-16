@@ -1,4 +1,5 @@
 import { useState } from "react";
+import usePageMeta from "../hooks/usePageMeta";
 import DashboardHero from "../components/DashboardHero";
 import DashboardSectionNav from "../components/DashboardSectionNav";
 import FlavorWheel from "../components/FlavorWheel";
@@ -32,6 +33,12 @@ function FlavorTags({ tags }) {
 }
 
 export default function DashboardPage() {
+  usePageMeta({
+    title: "Beranda",
+    description:
+      "Panduan seduh manual dari dasar sampai racikan siap pakai: roda rasa, jenis biji, proses, sangrai, gilingan, dan origin kopi.",
+    path: "/",
+  });
   const [varietyFilter, setVarietyFilter] = useState("Semua");
   const varietyCategories = ["Semua", "Klasik & Global", "Lokal Indonesia"];
   const visibleVarieties =

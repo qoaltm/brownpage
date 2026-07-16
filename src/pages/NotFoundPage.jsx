@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
+import usePageMeta from "../hooks/usePageMeta";
 
 export default function NotFoundPage() {
+  usePageMeta({
+    title: "Halaman Tidak Ditemukan",
+    description: "Halaman yang kamu cari tidak ditemukan di Brownpage.",
+    path: "/404",
+  });
   return (
     <div className="max-w-[1180px] mx-auto px-7">
       <div className="py-24 md:py-32 text-center max-w-[50ch] mx-auto">

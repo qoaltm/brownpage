@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Cog, Droplets, Scale, Filter, Beaker, Package, FlaskConical, GlassWater, Layers, ArrowUpRight, GitCompare, Check } from "lucide-react";
 import PageHeader from "../components/PageHeader";
+import usePageMeta from "../hooks/usePageMeta";
 import CompareTable from "../components/CompareTable";
 import { tools, toolCategories } from "../data/tools";
 
@@ -19,6 +20,12 @@ const ICONS = {
 const MAX_COMPARE = 3;
 
 export default function ToolsPage() {
+  usePageMeta({
+    title: "Tools untuk Barista",
+    description:
+      "Etalase alat seduh manual dari grinder sampai server, lengkap dengan fitur bandingkan spesifikasi berdampingan.",
+    path: "/tools",
+  });
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [compareKeys, setCompareKeys] = useState([]);
   const categories = ["Semua", ...toolCategories];
