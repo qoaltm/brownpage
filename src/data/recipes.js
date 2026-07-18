@@ -100,8 +100,7 @@ function totalWaterFor(state) {
   return Math.round(state.dose * (state.ratio / 10));
 }
 
-function kasuyaSchedule(state) {
-  const totalWater = totalWaterFor(state);
+function kasuyaSchedule(state, totalWater) {
   const first40 = Math.round(totalWater * 0.4);
   const last60 = totalWater - first40;
   const p1 = Math.round(first40 * (state.sweetAcid / 100));
@@ -132,8 +131,7 @@ function kasuyaSchedule(state) {
   return { steps, totalWater, totalTime: t };
 }
 
-function hoffmannSchedule(state) {
-  const totalWater = totalWaterFor(state);
+function hoffmannSchedule(state, totalWater) {
   const bloom = Math.round(state.dose * 2);
   const p60 = Math.round(totalWater * 0.6);
 
@@ -148,8 +146,7 @@ function hoffmannSchedule(state) {
   return { steps, totalWater, totalTime: 225 };
 }
 
-function kalitaSchedule(state) {
-  const totalWater = totalWaterFor(state);
+function kalitaSchedule(state, totalWater) {
   const bloom = Math.round(state.dose * 2);
   const stage1 = Math.round(totalWater * 0.5);
   const stage2 = Math.round(totalWater * 0.8);
@@ -165,8 +162,7 @@ function kalitaSchedule(state) {
   return { steps, totalWater, totalTime: 210 };
 }
 
-function frenchPressSchedule(state) {
-  const totalWater = totalWaterFor(state);
+function frenchPressSchedule(state, totalWater) {
   const steps = [
     { t: 0, amt: totalWater, label: "Tuang semua air, aduk perlahan", tag: "RENDAM" },
     { t: 240, amt: 0, label: "Tekan plunger perlahan, lalu sajikan", tag: "TEKAN" },
@@ -174,8 +170,7 @@ function frenchPressSchedule(state) {
   return { steps, totalWater, totalTime: 240 };
 }
 
-function mokaPotSchedule(state) {
-  const totalWater = totalWaterFor(state);
+function mokaPotSchedule(state, totalWater) {
   const steps = [
     { t: 0, amt: totalWater, label: "Isi chamber bawah air panas hingga batas katup", tag: "SIAP" },
     { t: 15, amt: 0, label: "Pasang basket berisi kopi (jangan ditekan), rakit, nyalakan api kecil-sedang", tag: "PANASKAN" },
@@ -184,8 +179,7 @@ function mokaPotSchedule(state) {
   return { steps, totalWater, totalTime: 240 };
 }
 
-function genericSchedule(state) {
-  const totalWater = totalWaterFor(state);
+function genericSchedule(state, totalWater) {
   let steps;
   let totalTime;
 
@@ -223,13 +217,41 @@ function genericSchedule(state) {
   return { steps, totalWater, totalTime };
 }
 
+// state.icedMode (opsional): kalau true, jadwal tuang dihitung dari porsi AIR
+// PANAS versi es (bukan gramasi penuh), karena sisa gramasinya berasal dari
+// es batu yang sudah ada di gelas, bukan dituang lewat dripper. Tanpa ini,
+// orang bakal nuang gramasi penuh + es di atasnya jadi kelebihan air.
 export function buildSchedule(state) {
-  if (state.recipe === "kasuya") return kasuyaSchedule(state);
-  if (state.recipe === "hoffmann") return hoffmannSchedule(state);
-  if (state.recipe === "kalita") return kalitaSchedule(state);
-  if (state.recipe === "frenchpress") return frenchPressSchedule(state);
-  if (state.recipe === "mokapot") return mokaPotSchedule(state);
-  return genericSchedule(state);
+  const fullWater = totalWaterFor(state);
+  const useIced = Boolean(state.icedMode) && state.recipe !== "coldbrew";
+  const pourWater = useIced ? icedVersion(fullWater).hotWater : fullWater;
+
+  let result;
+  if (state.recipe === "kasuya") result = kasuyaSchedule(state, pourWater);
+  else if (state.recipe === "hoffmann") result = hoffmannSchedule(state, pourWater);
+  else if (state.recipe === "kalita") result = kalitaSchedule(state, pourWater);
+  else if (state.recipe === "frenchpress") result = frenchPressSchedule(state, pourWater);
+  else if (state.recipe === "mokapot") result = mokaPotSchedule(state, pourWater);
+  else result = genericSchedule(state, pourWater);
+
+  if (useIced) {
+    const { ice } = icedVersion(fullWater);
+    result = {
+      ...result,
+      steps: [
+        ...result.steps,
+        {
+          t: result.totalTime + 5,
+          amt: 0,
+          label: `Tuang langsung ke gelas berisi ${ice}g es batu, aduk rata`,
+          tag: "ES",
+        },
+      ],
+      totalTime: result.totalTime + 5,
+    };
+  }
+
+  return { ...result, totalWater: fullWater, pourWater };
 }
 
 // Japanese iced coffee (flash chill): brew hot with only part of the total

@@ -126,7 +126,9 @@ export default function SpecCard({ brew, schedule }) {
           <Row k="Es batu di gelas saji" v={`${iced.ice} g`} />
           <p className="text-[10px] text-[#8A8070] leading-relaxed mt-3">
             Seduh langsung di atas es sejumlah itu supaya cepat dingin dan aromanya lebih terkunci.
-            Split 60:40 ini titik awal, boleh disesuaikan ke selera.
+            Split 60:40 ini titik awal, boleh disesuaikan ke selera. Nyalakan toggle{" "}
+            <span className="text-kertas">"Jadwal tuang: Es"</span> di kiri supaya jadwal tuang di
+            bawah otomatis pakai gramasi versi es ini, bukan gramasi penuh.
           </p>
         </>
       )}

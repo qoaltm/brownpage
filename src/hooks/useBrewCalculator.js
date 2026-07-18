@@ -10,6 +10,7 @@ export default function useBrewCalculator() {
   const [agitation, setAgitation] = useState(recipes.kasuya.agitation);
   const [sweetAcid, setSweetAcid] = useState(50);
   const [strengthPours, setStrengthPours] = useState(3);
+  const [icedMode, setIcedMode] = useState(false);
 
   function selectRecipe(key) {
     const r = recipes[key];
@@ -22,8 +23,8 @@ export default function useBrewCalculator() {
   }
 
   const schedule = useMemo(
-    () => buildSchedule({ recipe: recipeKey, dose, ratio, temp, agitation, sweetAcid, strengthPours }),
-    [recipeKey, dose, ratio, temp, agitation, sweetAcid, strengthPours]
+    () => buildSchedule({ recipe: recipeKey, dose, ratio, temp, agitation, sweetAcid, strengthPours, icedMode }),
+    [recipeKey, dose, ratio, temp, agitation, sweetAcid, strengthPours, icedMode]
   );
   const strength = useMemo(
     () => strengthEstimate({ recipe: recipeKey, temp, ratio, agitation }, schedule),
@@ -32,10 +33,11 @@ export default function useBrewCalculator() {
   const iced = useMemo(() => icedVersion(schedule.totalWater), [schedule.totalWater]);
 
   return {
-    recipeKey, dose, ratio, temp, grind, agitation, sweetAcid, strengthPours,
-    setDose, setRatio, setTemp, setGrind, setAgitation, setSweetAcid, setStrengthPours,
+    recipeKey, dose, ratio, temp, grind, agitation, sweetAcid, strengthPours, icedMode,
+    setDose, setRatio, setTemp, setGrind, setAgitation, setSweetAcid, setStrengthPours, setIcedMode,
     selectRecipe,
     schedule, strength, iced,
     showMini: recipes[recipeKey].showMini,
+    icedDisabled: recipeKey === "coldbrew",
   };
 }

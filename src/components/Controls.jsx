@@ -5,8 +5,8 @@ import { GRIND_LABELS } from "../data/recipes";
 
 export default function Controls({ brew }) {
   const {
-    dose, ratio, temp, grind, agitation, sweetAcid, strengthPours, showMini,
-    setDose, setRatio, setTemp, setGrind, setAgitation, setSweetAcid, setStrengthPours,
+    dose, ratio, temp, grind, agitation, sweetAcid, strengthPours, showMini, icedMode, icedDisabled,
+    setDose, setRatio, setTemp, setGrind, setAgitation, setSweetAcid, setStrengthPours, setIcedMode,
     schedule,
   } = brew;
 
@@ -75,6 +75,30 @@ export default function Controls({ brew }) {
               value={agitation}
               onChange={setAgitation}
             />
+          </div>
+
+          <div className="mb-7">
+            <div className="flex justify-between items-baseline mb-2.5">
+              <span className="text-[13px] font-bold uppercase tracking-wide">Jadwal tuang</span>
+            </div>
+            <Segmented
+              options={[
+                { value: false, label: "Panas" },
+                { value: true, label: "Es (Japanese iced)" },
+              ]}
+              value={icedDisabled ? false : icedMode}
+              onChange={setIcedMode}
+            />
+            {icedDisabled ? (
+              <p className="text-[11px] text-tintasoft leading-relaxed mt-2">
+                Cold Brew sudah dingin secara alami, toggle ini tidak berlaku untuk teknik ini.
+              </p>
+            ) : icedMode ? (
+              <p className="text-[11px] text-tintasoft leading-relaxed mt-2">
+                Jadwal di bawah otomatis dihitung ulang: cuma sejumlah air panas yang dituang lewat
+                dripper, sisanya sudah berupa es batu di gelas saji.
+              </p>
+            ) : null}
           </div>
 
           {showMini && (
