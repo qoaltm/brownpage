@@ -1,16 +1,21 @@
+import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import DashboardPage from "./pages/DashboardPage";
-import TeknikPage from "./pages/TeknikPage";
-import JurnalPage from "./pages/JurnalPage";
-import ToolsPage from "./pages/ToolsPage";
-import AboutPage from "./pages/AboutPage";
-import GlossaryPage from "./pages/GlossaryPage";
-import SyaratKetentuanPage from "./pages/SyaratKetentuanPage";
-import KebijakanPrivasiPage from "./pages/KebijakanPrivasiPage";
-import NotFoundPage from "./pages/NotFoundPage";
+
+// Lazy-load tiap halaman jadi chunk terpisah. Terutama penting untuk
+// ToolsPage karena dia menarik Firebase SDK (~450KB) yang cuma perlu
+// dimuat kalau orang benar-benar buka halaman Tools, bukan di semua halaman.
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const TeknikPage = lazy(() => import("./pages/TeknikPage"));
+const JurnalPage = lazy(() => import("./pages/JurnalPage"));
+const ToolsPage = lazy(() => import("./pages/ToolsPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const GlossaryPage = lazy(() => import("./pages/GlossaryPage"));
+const SyaratKetentuanPage = lazy(() => import("./pages/SyaratKetentuanPage"));
+const KebijakanPrivasiPage = lazy(() => import("./pages/KebijakanPrivasiPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -23,17 +28,19 @@ function AnimatedRoutes() {
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.22, ease: "easeInOut" }}
       >
-        <Routes location={location}>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/teknik" element={<TeknikPage />} />
-          <Route path="/jurnal" element={<JurnalPage />} />
-          <Route path="/tools" element={<ToolsPage />} />
-          <Route path="/kamus" element={<GlossaryPage />} />
-          <Route path="/tentang" element={<AboutPage />} />
-          <Route path="/syarat-dan-ketentuan" element={<SyaratKetentuanPage />} />
-          <Route path="/kebijakan-privasi" element={<KebijakanPrivasiPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes location={location}>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/teknik" element={<TeknikPage />} />
+            <Route path="/jurnal" element={<JurnalPage />} />
+            <Route path="/tools" element={<ToolsPage />} />
+            <Route path="/kamus" element={<GlossaryPage />} />
+            <Route path="/tentang" element={<AboutPage />} />
+            <Route path="/syarat-dan-ketentuan" element={<SyaratKetentuanPage />} />
+            <Route path="/kebijakan-privasi" element={<KebijakanPrivasiPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Suspense>
       </motion.div>
     </AnimatePresence>
   );

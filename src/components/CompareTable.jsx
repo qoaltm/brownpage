@@ -21,12 +21,12 @@ export default function CompareTable({ tools, onRemove, onReset }) {
         <div className="bg-kertas2 p-4 border-b border-r border-garis" />
         {tools.map((t) => (
           <div
-            key={t.key}
+            key={t.id}
             className="bg-kertas2 p-4 border-b border-garis flex items-start justify-between gap-2"
           >
             <span className="font-display font-bold text-sm leading-tight">{t.name}</span>
             <button
-              onClick={() => onRemove(t.key)}
+              onClick={() => onRemove(t.id)}
               aria-label={`Hapus ${t.name} dari perbandingan`}
               className="shrink-0 text-tintasoft hover:text-tinta transition-colors cursor-pointer"
             >
@@ -41,8 +41,8 @@ export default function CompareTable({ tools, onRemove, onReset }) {
               {attr.label}
             </div>
             {tools.map((t) => (
-              <div key={t.key + attr.key} className="p-4 border-b border-garis text-[13px] leading-relaxed">
-                {t[attr.key]}
+              <div key={t.id + attr.key} className="p-4 border-b border-garis text-[13px] leading-relaxed">
+                {t[attr.key] ?? "-"}
               </div>
             ))}
           </Fragment>
